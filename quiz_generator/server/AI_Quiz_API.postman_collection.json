@@ -1,0 +1,564 @@
+{
+  "info": {
+    "name": "AI Quiz Application API",
+    "description": "Complete API collection for the AI-powered Quiz Application with authentication, quiz generation, submission, and history management.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{auth_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3001",
+      "type": "string"
+    },
+    {
+      "key": "auth_token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health & Info",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            },
+            "description": "Check API health status"
+          }
+        },
+        {
+          "name": "API Info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/",
+              "host": ["{{base_url}}"],
+              "path": [""]
+            },
+            "description": "Get API information and available endpoints"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login (Mock Auth)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set('auth_token', jsonData.token);",
+                  "    pm.environment.set('auth_token', jsonData.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"testpass123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "description": "Mock login - accepts any username/password. Automatically saves JWT token."
+          }
+        },
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"newuser\",\n  \"password\": \"password123\",\n  \"email\": \"newuser@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "register"]
+            },
+            "description": "Register a new user (optional - login auto-creates users)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Quiz Management",
+      "item": [
+        {
+          "name": "Generate Quiz",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set('quiz_id', jsonData.quiz.id);",
+                  "    pm.environment.set('quiz_id', jsonData.quiz.id);",
+                  "    ",
+                  "    // Save question IDs",
+                  "    if (jsonData.quiz.questions && jsonData.quiz.questions.length > 0) {",
+                  "        pm.collectionVariables.set('question_id', jsonData.quiz.questions[0].id);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subject\": \"Mathematics\",\n  \"gradeLevel\": \"Grade 8\",\n  \"numberOfQuestions\": 5,\n  \"difficulty\": \"medium\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/quiz/generate",
+              "host": ["{{base_url}}"],
+              "path": ["api", "quiz", "generate"]
+            },
+            "description": "Generate a new AI-powered quiz. Automatically saves quiz ID and question IDs."
+          }
+        },
+        {
+          "name": "Submit Quiz",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set('submission_id', jsonData.submissionId);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quizId\": {{quiz_id}},\n  \"answers\": [\"4\", \"16\", \"8\", \"12\", \"20\"],\n  \"timeTaken\": 300\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/quiz/submit",
+              "host": ["{{base_url}}"],
+              "path": ["api", "quiz", "submit"]
+            },
+            "description": "Submit quiz answers for AI evaluation. Returns score, feedback, and improvement suggestions."
+          }
+        },
+        {
+          "name": "Get Quiz by ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/quiz/{{quiz_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "quiz", "{{quiz_id}}"]
+            },
+            "description": "Get specific quiz details with all questions"
+          }
+        },
+        {
+          "name": "Get Quiz History",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/quiz/history?page=1&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "quiz", "history"],
+              "query": [
+                {
+                  "key": "grade",
+                  "value": "Grade 8",
+                  "disabled": true
+                },
+                {
+                  "key": "subject",
+                  "value": "Math",
+                  "disabled": true
+                },
+                {
+                  "key": "minScore",
+                  "value": "70",
+                  "disabled": true
+                },
+                {
+                  "key": "maxScore",
+                  "value": "100",
+                  "disabled": true
+                },
+                {
+                  "key": "startDate",
+                  "value": "2024-01-01",
+                  "disabled": true
+                },
+                {
+                  "key": "endDate",
+                  "value": "2024-12-31",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Get quiz history with optional filters. Enable query parameters as needed."
+          }
+        },
+        {
+          "name": "Get Quiz History - Filtered by Subject",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/quiz/history?subject=Math&page=1&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "quiz", "history"],
+              "query": [
+                {
+                  "key": "subject",
+                  "value": "Math"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Example: Filter quiz history by subject"
+          }
+        },
+        {
+          "name": "Get Quiz History - Filtered by Score Range",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/quiz/history?minScore=80&maxScore=100",
+              "host": ["{{base_url}}"],
+              "path": ["api", "quiz", "history"],
+              "query": [
+                {
+                  "key": "minScore",
+                  "value": "80"
+                },
+                {
+                  "key": "maxScore",
+                  "value": "100"
+                }
+              ]
+            },
+            "description": "Example: Filter quiz history by score range (80-100%)"
+          }
+        },
+        {
+          "name": "Retry Quiz",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quizId\": {{quiz_id}},\n  \"answers\": [\"4\", \"16\", \"9\", \"15\", \"21\"],\n  \"timeTaken\": 280\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/quiz/retry",
+              "host": ["{{base_url}}"],
+              "path": ["api", "quiz", "retry"]
+            },
+            "description": "Retry a quiz with new answers. Keeps history of original submission."
+          }
+        },
+        {
+          "name": "Get Hint for Question",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"questionId\": {{question_id}}\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/quiz/hint",
+              "host": ["{{base_url}}"],
+              "path": ["api", "quiz", "hint"]
+            },
+            "description": "Get an AI-generated hint for a specific question"
+          }
+        },
+        {
+          "name": "Get Leaderboard",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/quiz/leaderboard?subject=Mathematics&gradeLevel=Grade 8&limit=10&period=all",
+              "host": ["{{base_url}}"],
+              "path": ["api", "quiz", "leaderboard"],
+              "query": [
+                {
+                  "key": "subject",
+                  "value": "Mathematics",
+                  "description": "Subject filter (required)"
+                },
+                {
+                  "key": "gradeLevel",
+                  "value": "Grade 8",
+                  "description": "Grade level filter (required)"
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Number of top scores to return (default: 10)"
+                },
+                {
+                  "key": "period",
+                  "value": "all",
+                  "description": "Time period: all, today, week, month (default: all)"
+                }
+              ]
+            },
+            "description": "Get top scores leaderboard for a specific subject and grade level. Supports filtering by time period."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Complete Workflow Examples",
+      "item": [
+        {
+          "name": "Example: Science Quiz",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subject\": \"Science\",\n  \"gradeLevel\": \"Grade 10\",\n  \"numberOfQuestions\": 8,\n  \"difficulty\": \"hard\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/quiz/generate",
+              "host": ["{{base_url}}"],
+              "path": ["api", "quiz", "generate"]
+            },
+            "description": "Example: Generate a hard Science quiz for Grade 10"
+          }
+        },
+        {
+          "name": "Example: History Quiz (Easy)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subject\": \"History\",\n  \"gradeLevel\": \"Grade 6\",\n  \"numberOfQuestions\": 10,\n  \"difficulty\": \"easy\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/quiz/generate",
+              "host": ["{{base_url}}"],
+              "path": ["api", "quiz", "generate"]
+            },
+            "description": "Example: Generate an easy History quiz for Grade 6"
+          }
+        }
+      ]
+    }
+  ]
+}

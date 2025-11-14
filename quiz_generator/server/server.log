@@ -1,0 +1,71 @@
+
+> ai-quiz-backend@1.0.0 start
+> node server.js
+
+
+╔═══════════════════════════════════════════════════════╗
+║         AI Quiz Application Server                    ║
+║                                                       ║
+║  Status: Running                                      ║
+║  Port: 3001                                        ║
+║  Environment: development                              ║
+║                                                       ║
+║  API Documentation: http://localhost:3001/         ║
+║  Health Check: http://localhost:3001/health        ║
+╚═══════════════════════════════════════════════════════╝
+  
+✓ Connected to PostgreSQL database
+::1 - - [13/Nov/2025:17:07:44 +0000] "POST /api/quiz/generate HTTP/1.1" 201 898 "-" "curl/8.7.1"
+::1 - - [13/Nov/2025:17:08:12 +0000] "POST /api/quiz/submit HTTP/1.1" 200 949 "-" "curl/8.7.1"
+::1 - - [13/Nov/2025:17:08:23 +0000] "POST /api/quiz/generate HTTP/1.1" 201 1145 "-" "curl/8.7.1"
+::1 - - [13/Nov/2025:17:08:40 +0000] "POST /api/quiz/submit HTTP/1.1" 200 1506 "-" "curl/8.7.1"
+✓ Connected to PostgreSQL database
+::1 - - [13/Nov/2025:17:09:37 +0000] "GET /api/quiz/history?subject=Science&page=1&limit=10 HTTP/1.1" 200 339 "-" "curl/8.7.1"
+✓ Connected to PostgreSQL database
+::1 - - [13/Nov/2025:17:10:11 +0000] "POST /api/quiz/hint HTTP/1.1" 200 324 "-" "curl/8.7.1"
+::1 - - [13/Nov/2025:17:10:26 +0000] "POST /api/quiz/retry HTTP/1.1" 200 1584 "-" "curl/8.7.1"
+::1 - - [13/Nov/2025:17:14:05 +0000] "GET / HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+✓ Connected to PostgreSQL database
+::1 - - [13/Nov/2025:17:30:16 +0000] "POST /api/auth/login HTTP/1.1" 200 258 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+::1 - - [13/Nov/2025:17:30:16 +0000] "GET /api/quiz/history?page=1&limit=20 HTTP/1.1" 200 74 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+✓ Connected to PostgreSQL database
+::1 - - [13/Nov/2025:17:31:27 +0000] "POST /api/quiz/generate HTTP/1.1" 201 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+::1 - - [13/Nov/2025:17:31:34 +0000] "POST /api/quiz/hint HTTP/1.1" 200 401 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+::1 - - [13/Nov/2025:17:31:46 +0000] "POST /api/quiz/hint HTTP/1.1" 200 294 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+::1 - - [13/Nov/2025:17:31:50 +0000] "POST /api/quiz/hint HTTP/1.1" 200 278 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+::1 - - [13/Nov/2025:17:32:06 +0000] "POST /api/quiz/submit HTTP/1.1" 200 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+::1 - - [13/Nov/2025:17:32:21 +0000] "GET /api/quiz/history?page=1&limit=20 HTTP/1.1" 200 335 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+::1 - - [13/Nov/2025:17:32:25 +0000] "GET /api/quiz/history?page=1&limit=20 HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+✓ Connected to PostgreSQL database
+::1 - - [13/Nov/2025:17:51:43 +0000] "GET /api/quiz/history?page=1&limit=20 HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+::1 - - [13/Nov/2025:17:51:48 +0000] "GET /api/quiz/history?page=1&limit=20 HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+::1 - - [13/Nov/2025:17:51:50 +0000] "GET /api/quiz/history?page=1&limit=20 HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+✓ Connected to PostgreSQL database
+::1 - - [13/Nov/2025:18:02:13 +0000] "POST /api/quiz/generate HTTP/1.1" 201 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+✓ Connected to PostgreSQL database
+::1 - - [13/Nov/2025:18:02:52 +0000] "POST /api/quiz/hint HTTP/1.1" 200 312 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+::1 - - [13/Nov/2025:18:03:02 +0000] "POST /api/quiz/hint HTTP/1.1" 200 324 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+::1 - - [13/Nov/2025:18:03:11 +0000] "POST /api/quiz/hint HTTP/1.1" 200 316 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+::1 - - [13/Nov/2025:18:03:16 +0000] "POST /api/quiz/submit HTTP/1.1" 200 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+::1 - - [13/Nov/2025:18:03:45 +0000] "POST /api/quiz/submit HTTP/1.1" 200 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+✓ Connected to PostgreSQL database
+::1 - - [14/Nov/2025:04:29:58 +0000] "GET /api/quiz/history?page=1&limit=20 HTTP/1.1" 200 865 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+::1 - - [14/Nov/2025:04:29:59 +0000] "GET /api/quiz/history?page=1&limit=20 HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+::1 - - [14/Nov/2025:04:29:59 +0000] "GET /api/quiz/history?page=1&limit=20 HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+::1 - - [14/Nov/2025:04:30:03 +0000] "POST /api/quiz/generate HTTP/1.1" 201 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+✓ Connected to PostgreSQL database
+::1 - - [14/Nov/2025:04:31:12 +0000] "POST /api/auth/login HTTP/1.1" 200 249 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+::1 - - [14/Nov/2025:04:31:12 +0000] "GET /api/quiz/history?page=1&limit=20 HTTP/1.1" 200 74 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+✓ Connected to PostgreSQL database
+::1 - - [14/Nov/2025:04:31:43 +0000] "POST /api/quiz/generate HTTP/1.1" 201 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+::1 - - [14/Nov/2025:04:31:50 +0000] "POST /api/quiz/submit HTTP/1.1" 200 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+::1 - - [14/Nov/2025:04:31:58 +0000] "GET /api/quiz/history?page=1&limit=20 HTTP/1.1" 200 340 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+::1 - - [14/Nov/2025:04:32:06 +0000] "GET /api/quiz/history?page=1&limit=20 HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+::1 - - [14/Nov/2025:04:32:07 +0000] "GET /api/quiz/history?page=1&limit=20 HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+::1 - - [14/Nov/2025:04:32:08 +0000] "GET /api/quiz/history?page=1&limit=20 HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+::1 - - [14/Nov/2025:04:32:23 +0000] "GET /api/quiz/history?page=1&limit=20 HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+::1 - - [14/Nov/2025:04:32:24 +0000] "GET /api/quiz/history?page=1&limit=20 HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+::1 - - [14/Nov/2025:04:32:24 +0000] "GET /api/quiz/history?page=1&limit=20 HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+::1 - - [14/Nov/2025:04:32:25 +0000] "GET /api/quiz/history?page=1&limit=20 HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+✓ Connected to PostgreSQL database
+::1 - - [14/Nov/2025:09:52:56 +0000] "POST /api/quiz/generate HTTP/1.1" 201 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"

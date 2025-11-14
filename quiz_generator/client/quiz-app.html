@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Quiz Application</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .auth-section {
+            display: block;
+        }
+
+        .quiz-section {
+            display: none;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .user-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .question {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .question h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: #f0f0ff;
+        }
+
+        .option.selected {
+            border-color: #667eea;
+            background: #e8ebff;
+        }
+
+        .option.correct {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+
+        .option.incorrect {
+            border-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .result-card h2 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .result-card p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .suggestions {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .suggestions h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .suggestions li {
+            color: #856404;
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .history-table th, .history-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .history-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .score-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .score-high {
+            background: #d4edda;
+            color: #28a745;
+        }
+
+        .score-medium {
+            background: #fff3cd;
+            color: #ffc107;
+        }
+
+        .score-low {
+            background: #f8d7da;
+            color: #dc3545;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #667eea;
+        }
+
+        .loading::after {
+            content: '...';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #dc3545;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #28a745;
+        }
+
+        .hint-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .hint-box p {
+            color: #1565C0;
+            margin: 0;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            background: #f8f9fa;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 AI Quiz Application</h1>
+            <p>Test your knowledge with AI-powered quizzes</p>
+        </div>
+
+        <!-- Authentication Section -->
+        <div class="auth-section" id="authSection">
+            <div class="card">
+                <h2 style="margin-bottom: 20px;">Login</h2>
+                <div id="authMessage"></div>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter any username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter any password">
+                </div>
+                <button onclick="login()">Login / Sign Up</button>
+                <p style="margin-top: 15px; color: #666; font-size: 0.9rem;">
+                    💡 Tip: Use any username and password (mock authentication)
+                </p>
+            </div>
+        </div>
+
+        <!-- Quiz Section -->
+        <div class="quiz-section" id="quizSection">
+            <!-- User Info -->
+            <div class="user-info">
+                <div>
+                    <strong>Welcome, <span id="displayUsername"></span>!</strong>
+                </div>
+                <button onclick="logout()" class="btn-secondary">Logout</button>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('generate')">Generate Quiz</button>
+                <button class="tab" onclick="showTab('history')">Quiz History</button>
+            </div>
+
+            <!-- Generate Quiz Tab -->
+            <div id="generateTab" class="card">
+                <h2 style="margin-bottom: 20px;">Generate New Quiz</h2>
+                <div id="generateMessage"></div>
+                
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" placeholder="e.g., Mathematics, Science, History" value="Science">
+                </div>
+                
+                <div class="form-group">
+                    <label for="gradeLevel">Grade Level</label>
+                    <select id="gradeLevel">
+                        <option value="Grade 6">Grade 6</option>
+                        <option value="Grade 7" selected>Grade 7</option>
+                        <option value="Grade 8">Grade 8</option>
+                        <option value="Grade 9">Grade 9</option>
+                        <option value="Grade 10">Grade 10</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="numberOfQuestions">Number of Questions</label>
+                    <select id="numberOfQuestions">
+                        <option value="3">3 Questions</option>
+                        <option value="5" selected>5 Questions</option>
+                        <option value="10">10 Questions</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="difficulty">Difficulty</label>
+                    <select id="difficulty">
+                        <option value="easy">Easy</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </div>
+                
+                <button onclick="generateQuiz()" id="generateBtn">🚀 Generate Quiz</button>
+            </div>
+
+            <!-- Quiz Questions -->
+            <div id="quizQuestions" style="display: none;">
+                <div class="card">
+                    <h2 style="margin-bottom: 20px;">Quiz: <span id="quizTitle"></span></h2>
+                    <p style="color: #666; margin-bottom: 20px;">
+                        <strong>Subject:</strong> <span id="quizSubject"></span> | 
+                        <strong>Grade:</strong> <span id="quizGrade"></span> | 
+                        <strong>Difficulty:</strong> <span id="quizDifficulty"></span>
+                    </p>
+                    <div id="questionsContainer"></div>
+                    <button onclick="submitQuiz()" id="submitBtn" class="btn-success">Submit Answers</button>
+                    <button onclick="cancelQuiz()" class="btn-secondary">Cancel</button>
+                </div>
+            </div>
+
+            <!-- Quiz Results -->
+            <div id="quizResults" style="display: none;">
+                <div class="result-card">
+                    <h2 id="scoreDisplay">0%</h2>
+                    <p>Your Score</p>
+                </div>
+                
+                <div class="card">
+                    <h3 style="margin-bottom: 20px;">Detailed Results</h3>
+                    <div id="resultsContainer"></div>
+                    
+                    <div id="suggestionsContainer"></div>
+                    
+                    <div style="margin-top: 20px;">
+                        <button onclick="retryQuiz()" class="btn-success">🔄 Retry This Quiz</button>
+                        <button onclick="generateNewQuiz()">📝 New Quiz</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History Tab -->
+            <div id="historyTab" class="card" style="display: none;">
+                <h2 style="margin-bottom: 20px;">Quiz History</h2>
+                <div id="historyMessage"></div>
+                
+                <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+                    <input type="text" id="filterSubject" placeholder="Filter by subject" style="flex: 1; min-width: 200px;">
+                    <select id="filterGrade" style="flex: 1; min-width: 150px;">
+                        <option value="">All Grades</option>
+                        <option value="Grade 6">Grade 6</option>
+                        <option value="Grade 7">Grade 7</option>
+                        <option value="Grade 8">Grade 8</option>
+                        <option value="Grade 9">Grade 9</option>
+                        <option value="Grade 10">Grade 10</option>
+                    </select>
+                    <button onclick="loadHistory()" class="btn-success">🔍 Filter</button>
+                </div>
+                
+                <div id="historyContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3001';
+        let authToken = localStorage.getItem('authToken');
+        let currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        let currentQuiz = null;
+        let userAnswers = [];
+        let startTime = null;
+        let currentQuizId = null;
+
+        // Initialize
+        if (authToken && currentUser.username) {
+            showQuizSection();
+        }
+
+        function showMessage(elementId, message, type = 'error') {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="${type}">${message}</div>`;
+            setTimeout(() => element.innerHTML = '', 5000);
+        }
+
+        async function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (!username || !password) {
+                showMessage('authMessage', 'Please enter username and password');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/api/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    authToken = data.token;
+                    currentUser = data.user;
+                    localStorage.setItem('authToken', authToken);
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    showQuizSection();
+                } else {
+                    showMessage('authMessage', data.error || 'Login failed');
+                }
+            } catch (error) {
+                showMessage('authMessage', 'Connection error. Make sure the server is running.');
+            }
+        }
+
+        function logout() {
+            authToken = null;
+            currentUser = {};
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('currentUser');
+            document.getElementById('authSection').style.display = 'block';
+            document.getElementById('quizSection').style.display = 'none';
+        }
+
+        function showQuizSection() {
+            document.getElementById('authSection').style.display = 'none';
+            document.getElementById('quizSection').style.display = 'block';
+            document.getElementById('displayUsername').textContent = currentUser.username;
+            loadHistory();
+        }
+
+        function showTab(tab) {
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Hide all quiz-related sections
+            document.getElementById('quizQuestions').style.display = 'none';
+            document.getElementById('quizResults').style.display = 'none';
+
+            // Show selected tab
+            if (tab === 'generate') {
+                document.getElementById('generateTab').style.display = 'block';
+                document.getElementById('historyTab').style.display = 'none';
+            } else {
+                document.getElementById('generateTab').style.display = 'none';
+                document.getElementById('historyTab').style.display = 'block';
+                loadHistory();
+            }
+        }
+
+        async function generateQuiz() {
+            const subject = document.getElementById('subject').value;
+            const gradeLevel = document.getElementById('gradeLevel').value;
+            const numberOfQuestions = document.getElementById('numberOfQuestions').value;
+            const difficulty = document.getElementById('difficulty').value;
+
+            if (!subject) {
+                showMessage('generateMessage', 'Please enter a subject');
+                return;
+            }
+
+            const btn = document.getElementById('generateBtn');
+            btn.disabled = true;
+            btn.textContent = 'Generating Quiz...';
+
+            try {
+                const response = await fetch(`${API_URL}/api/quiz/generate`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({
+                        subject,
+                        gradeLevel,
+                        numberOfQuestions: parseInt(numberOfQuestions),
+                        difficulty
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    currentQuiz = data.quiz;
+                    currentQuizId = data.quiz.id;
+                    userAnswers = new Array(data.quiz.questions.length).fill(null);
+                    startTime = Date.now();
+                    displayQuiz();
+                } else {
+                    showMessage('generateMessage', data.error || 'Failed to generate quiz');
+                }
+            } catch (error) {
+                showMessage('generateMessage', 'Error generating quiz: ' + error.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '🚀 Generate Quiz';
+            }
+        }
+
+        function displayQuiz() {
+            document.getElementById('generateTab').style.display = 'none';
+            document.getElementById('quizQuestions').style.display = 'block';
+            
+            document.getElementById('quizTitle').textContent = currentQuiz.title;
+            document.getElementById('quizSubject').textContent = currentQuiz.subject;
+            document.getElementById('quizGrade').textContent = currentQuiz.grade_level;
+            document.getElementById('quizDifficulty').textContent = currentQuiz.difficulty_level;
+
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = currentQuiz.questions.map((q, index) => `
+                <div class="question">
+                    <h3>Question ${index + 1}</h3>
+                    <p style="margin-bottom: 15px; font-size: 1.1rem;">${q.questionText}</p>
+                    <div class="options">
+                        ${q.options.map((option, optIndex) => `
+                            <div class="option" onclick="selectAnswer(${index}, '${option.replace(/'/g, "\\'")}')">
+                                ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <button onclick="getHint(${q.id}, ${index})" style="margin-top: 10px; font-size: 0.9rem;">💡 Get Hint</button>
+                    <div id="hint-${index}"></div>
+                </div>
+            `).join('');
+        }
+
+        function selectAnswer(questionIndex, answer) {
+            userAnswers[questionIndex] = answer;
+            
+            // Update UI
+            const question = document.querySelectorAll('.question')[questionIndex];
+            question.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+                if (opt.textContent.trim() === answer) {
+                    opt.classList.add('selected');
+                }
+            });
+        }
+
+        async function getHint(questionId, questionIndex) {
+            try {
+                const response = await fetch(`${API_URL}/api/quiz/hint`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({ questionId })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById(`hint-${questionIndex}`).innerHTML = `
+                        <div class="hint-box">
+                            <strong>💡 Hint:</strong>
+                            <p>${data.hint}</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error getting hint:', error);
+            }
+        }
+
+        async function submitQuiz() {
+            if (userAnswers.includes(null)) {
+                alert('Please answer all questions before submitting!');
+                return;
+            }
+
+            const timeTaken = Math.floor((Date.now() - startTime) / 1000);
+
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.textContent = 'Submitting...';
+
+            try {
+                const response = await fetch(`${API_URL}/api/quiz/submit`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({
+                        quizId: currentQuizId,
+                        answers: userAnswers,
+                        timeTaken
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    displayResults(data);
+                } else {
+                    alert('Error submitting quiz: ' + (data.error || 'Unknown error'));
+                }
+            } catch (error) {
+                alert('Error submitting quiz: ' + error.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Submit Answers';
+            }
+        }
+
+        function displayResults(data) {
+            document.getElementById('quizQuestions').style.display = 'none';
+            document.getElementById('quizResults').style.display = 'block';
+
+            document.getElementById('scoreDisplay').textContent = `${Math.round(data.score)}%`;
+
+            const resultsHTML = data.feedback.map((fb, index) => `
+                <div class="question">
+                    <h4>Question ${index + 1}: ${currentQuiz.questions[index].questionText}</h4>
+                    <div class="option ${fb.isCorrect ? 'correct' : 'incorrect'}">
+                        Your answer: ${fb.userAnswer}
+                    </div>
+                    ${!fb.isCorrect ? `
+                        <div class="option correct">
+                            Correct answer: ${fb.correctAnswer}
+                        </div>
+                    ` : ''}
+                    <p style="margin-top: 10px; color: #666;">
+                        <strong>Explanation:</strong> ${fb.explanation}
+                    </p>
+                </div>
+            `).join('');
+
+            document.getElementById('resultsContainer').innerHTML = resultsHTML;
+
+            if (data.suggestions && data.suggestions.length > 0) {
+                document.getElementById('suggestionsContainer').innerHTML = `
+                    <div class="suggestions">
+                        <h4>💡 Suggestions for Improvement</h4>
+                        <ul>
+                            ${data.suggestions.map(s => `<li>${s}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+        }
+
+        async function retryQuiz() {
+            userAnswers = new Array(currentQuiz.questions.length).fill(null);
+            startTime = Date.now();
+            document.getElementById('quizResults').style.display = 'none';
+            document.getElementById('quizQuestions').style.display = 'block';
+            displayQuiz();
+        }
+
+        function generateNewQuiz() {
+            document.getElementById('quizResults').style.display = 'none';
+            document.getElementById('generateTab').style.display = 'block';
+            currentQuiz = null;
+            userAnswers = [];
+        }
+
+        function cancelQuiz() {
+            document.getElementById('quizQuestions').style.display = 'none';
+            document.getElementById('generateTab').style.display = 'block';
+        }
+
+        async function loadHistory() {
+            const subject = document.getElementById('filterSubject')?.value || '';
+            const grade = document.getElementById('filterGrade')?.value || '';
+
+            try {
+                let url = `${API_URL}/api/quiz/history?page=1&limit=20`;
+                if (subject) url += `&subject=${subject}`;
+                if (grade) url += `&grade=${grade}`;
+
+                const response = await fetch(url, {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    displayHistory(data.quizzes);
+                }
+            } catch (error) {
+                showMessage('historyMessage', 'Error loading history: ' + error.message);
+            }
+        }
+
+        function displayHistory(quizzes) {
+            const container = document.getElementById('historyContainer');
+            
+            if (quizzes.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #666; padding: 40px;">No quizzes found. Generate your first quiz!</p>';
+                return;
+            }
+
+            container.innerHTML = `
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Grade</th>
+                            <th>Difficulty</th>
+                            <th>Score</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${quizzes.map(quiz => `
+                            <tr>
+                                <td>${quiz.subject}</td>
+                                <td>${quiz.grade_level}</td>
+                                <td>${quiz.difficulty_level}</td>
+                                <td>
+                                    ${quiz.score ? `
+                                        <span class="score-badge ${
+                                            parseFloat(quiz.score) >= 70 ? 'score-high' : 
+                                            parseFloat(quiz.score) >= 40 ? 'score-medium' : 'score-low'
+                                        }">
+                                            ${Math.round(parseFloat(quiz.score))}%
+                                        </span>
+                                    ` : '<span style="color: #666;">Not submitted</span>'}
+                                </td>
+                                <td>${new Date(quiz.created_at).toLocaleDateString()}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+    </script>
+</body>
+</html>
